@@ -6,8 +6,7 @@
 
     <v-spacer />
 
-    <v-btn x-small text href="https://kinetics.co.ke/" target="_blank">
-      Kinetics Technology LTD
+    <v-btn x-small text href="" target="_blank">
       <v-icon x-small right> mdi-open-in-new </v-icon>
     </v-btn>
   </v-footer>
