@@ -25,15 +25,9 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((v) => {
       if (AuthService.check()) {
-        if (v.$route.params.code) {
-          v.$router.replace({
-            name: "Application",
-          });
-        } else {
-          v.$router.replace({
-            name: "Home",
-          });
-        }
+        v.$router.replace({
+          name: "Dashboard",
+        });
       }
     });
   },
@@ -41,10 +35,6 @@ export default {
   computed: {
     auth() {
       return AuthService;
-    },
-
-    company() {
-      return this.$store.getters["Home/company"];
     },
   },
 

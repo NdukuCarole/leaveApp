@@ -48,10 +48,7 @@ export default {
   components: { AppFooter, Logo },
 
   beforeRouteEnter(to, from, next) {
-    next((v) => {
-      v.$store.dispatch("Home/getCategories");
-      v.$store.dispatch("Home/getJobs");
-    });
+    next(() => {});
   },
 
   computed: {

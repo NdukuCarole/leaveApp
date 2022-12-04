@@ -19,11 +19,11 @@ import AttachmentCard from "@/modules/profile/components/attachments/AttachmentC
 
 export default [
   {
-    path: "/",
+    path: "/home",
     component: home,
     children: [
       {
-        path: "",
+        path: "list",
         name: "Home",
         component: jobList,
       },

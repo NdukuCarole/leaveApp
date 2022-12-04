@@ -8,7 +8,7 @@ import Register from "./components/Register";
 
 export default [
   {
-    path: "/auth",
+    path: "/",
     component: AuthLayout,
     children: [
       {

@@ -1,5 +1,10 @@
 <template>
-  <v-container fluid class="fill-height d-flex flex-row align-center">
+  <v-container
+    fluid
+    class="fill-height d-flex flex-row align-center"
+    color="#26c6da"
+    style="background-color: #dcdcdc"
+  >
     <v-row>
       <v-col md="4" sm="12" offset-md="4">
         <v-card>

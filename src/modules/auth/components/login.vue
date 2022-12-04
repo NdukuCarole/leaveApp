@@ -1,105 +1,172 @@
 <template>
-  <v-container class="fill-height d-flex flex-column align-content-center">
-    <v-dialog v-model="dialog" persistent>
-      <v-overlay opacity="0" class="black--text" absolute>
-        <v-row style="width: 90vw">
-          <v-col cols="12" md="4" offset-md="4">
-            <v-card tile light>
-              <v-card-title> Login to account </v-card-title>
+  <v-container
+    fluid
+    class="fill-height d-flex flex-row align-center"
+    color="#26c6da"
+    style="background-color: #dcdcdc"
+    @keypress.enter="login"
+  >
+    <v-row class="mt-1">
+      <v-col cols="12" md="8" offset-md="2">
+        <v-sheet elevation="2" rounded="xl" class="pa-10">
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-card flat>
+                <v-img
+                  src="../../../assets/profile.jpg"
+                  height="50"
+                  contain
+                  class="mb-5"
+                />
 
-              <v-card-text class="mt-5">
-                <v-alert
-                  outlined
-                  v-if="$store.getters['Auth/alert'].status"
-                  dense
-                  border="left"
-                  :type="
-                    $store.getters['Auth/alert'].status === 'success'
-                      ? 'success'
-                      : 'error'
-                  "
-                  class="mt-3"
+                <v-card-title
+                  class="d-flex flex-row justify-center font-weight-black"
                 >
-                  {{ $store.getters["Auth/alert"].message }}
-                </v-alert>
+                  LOG IN
+                </v-card-title>
 
-                <v-form ref="loginForm" v-model="isValid">
-                  <!--User name-->
-                  <v-text-field
-                    @keyup.enter.prevent="login"
-                    ref="email"
-                    label="Email address"
-                    :rules="rules.email"
-                    v-model="formData.email"
+                <v-card-subtitle class="text-center font-weight-black">
+                  For existing members with active accounts
+                </v-card-subtitle>
+
+                <v-card-text class="text-justify mt-2 pb-0">
+                  <v-alert
                     outlined
-                    placeholder="Enter email address"
+                    v-if="$store.getters['Auth/alert'].status"
+                    dense
+                    border="left"
+                    :type="
+                      $store.getters['Auth/alert'].status === 'success'
+                        ? 'success'
+                        : 'error'
+                    "
+                    class="mb-10"
+                  >
+                    {{ $store.getters["Auth/alert"].message }}
+                  </v-alert>
+
+                  <v-text-field
+                    dense
+                    outlined
+                    label="Email Address"
+                    placeholder="Enter your Email Address"
+                    v-model="formData.email"
+                    ref="email"
+                    :rules="rules.email"
                   />
 
-                  <!-- Password -->
                   <v-text-field
-                    @keyup.enter.prevent="login"
+                    dense
+                    outlined
+                    label="Password"
+                    @keypress.enter="login"
+                    placeholder="Enter your password"
+                    v-model="formData.password"
                     ref="password"
                     :rules="rules.password"
-                    label="Password"
-                    v-model="formData.password"
-                    outlined
-                    placeholder="Enter Password"
                     :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                     :type="showPassword ? 'text' : 'password'"
                     @click:append="showPassword = !showPassword"
                   />
-                </v-form>
-              </v-card-text>
+                </v-card-text>
 
-              <v-card-actions class="mt-n5">
-                <v-col cols="12">
-                  <v-btn
-                    @click="login"
-                    color="primary"
-                    block
-                    class="mt-n5"
-                    :loading="$store.getters['loading']"
-                  >
-                    Login
-                  </v-btn>
+                <v-card-actions class="">
+                  <v-row>
+                    <v-col cols="12">
+                      <v-btn @click="login" color="primary" block>
+                        Login
+                      </v-btn>
+                    </v-col>
 
-                  <v-btn
-                    class="mt-0 text-lowercase text-decoration-underline"
-                    text
-                    :to="{ name: 'forgotPassword' }"
-                  >
-                    Forgot password?</v-btn
-                  >
-                  <p class="text-center overline grey--text">
-                    dont have an account?
-                  </p>
-                  <v-btn
-                    :to="{ name: 'Register', params: { code: routeParams } }"
-                    color="secondary"
-                    block
-                  >
-                    register
-                  </v-btn>
-                </v-col>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-overlay>
+                    <v-btn
+                      class="mt-n4 text-lowercase text-decoration-underline"
+                      text
+                      color="info"
+                      :to="{ name: 'forgotPassword' }"
+                    >
+                      Forgot password?</v-btn
+                    >
+                    <v-col cols="12" class="mt-n4">
+                      <p class="text-center overline grey--text">OR</p>
+                    </v-col>
 
-      <request-access />
-    </v-dialog>
+                    <v-col md="12" class="mt-n10">
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            :to="{ name: 'Register' }"
+                            color="secondary"
+                            block
+                            text
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            New Registration
+                          </v-btn>
+                        </template>
+                        <span>For new users</span>
+                      </v-tooltip>
+                    </v-col>
+                  </v-row>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+
+            <v-col cols="12" v-if="$vuetify.breakpoint.smAndDown">
+              <v-divider />
+            </v-col>
+            <v-divider v-else vertical />
+
+            <v-col cols="12" md="6">
+              <v-card flat>
+                <v-card-title class="justify-center font-weight-black mt-4">
+                  Existing Members
+                </v-card-title>
+                <v-card-text class="mt-n6 justify-left">
+                  <br />
+                  <ul>
+                    <li class="mt-1">
+                      Enter your email address which
+                      <b>should be the same as the one used on Registration</b
+                      ><br />
+                    </li>
+                    <li class="mt-1">
+                      Enter your <b>Password</b>
+                      <br />
+                    </li>
+
+                    <li class="mt-1">Login to your <b>portal</b></li>
+                  </ul>
+                </v-card-text>
+                <v-card-title class="justify-center font-weight-black mt-4">
+                  New Applicants
+                </v-card-title>
+                <v-card-text class="mt-n6 justify-left">
+                  <br />
+                  <ul>
+                    <li>Click the <b> New Registration</b> button</li>
+                    <li class="mt-1">
+                      Follow the process to register and create an account
+                    </li>
+                  </ul>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-sheet>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 // import AuthAlert from "@/modules/auth/components/authAlert";
 import { EventBus } from "@/utils/eventBus";
-import RequestAccess from "@/modules/auth/components/requestAccess";
+// import RequestAccess from "@/modules/auth/components/requestAccess";
 
 export default {
   name: "login",
-  components: { RequestAccess },
+  // components: { RequestAccess },
   data: function () {
     return {
       dialog: true,

@@ -47,14 +47,11 @@ import AppFooter from "@/components/app-footer";
 import { AuthService } from "@/modules/auth";
 import Logo from "@/components/Logo";
 export default {
-  name: "home",
+  name: "Login",
   components: { AppFooter, Logo },
 
   beforeRouteEnter(to, from, next) {
-    next((v) => {
-      v.$store.dispatch("Home/getCategories");
-      v.$store.dispatch("Home/getJobs");
-    });
+    next(() => {});
   },
 
   computed: {
