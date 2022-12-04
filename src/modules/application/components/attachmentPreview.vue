@@ -14,7 +14,7 @@
       <v-card-text v-if="dialog" class="attachment">
         <!--BEGIN display pdf-->
 
-        <v-img :src="`${url}${this.attachmentDetails}`" />
+        <pdf :src="`${url}${this.attachmentDetails}`"></pdf>
       </v-card-text>
       <!--END display attachment-->
       <v-divider />
@@ -26,8 +26,11 @@
   </v-dialog>
 </template>
 <script>
+import pdf from "vue-pdf";
 export default {
-  components: {},
+  components: {
+    pdf,
+  },
 
   name: "AttachmentPreview",
   props: {

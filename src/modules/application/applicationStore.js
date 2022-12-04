@@ -1,5 +1,6 @@
 import call from "@/service/http";
 import constants from "./applicationConstants";
+import { EventBus } from "@/utils/eventBus";
 
 export default {
   namespaced: true,
@@ -28,7 +29,7 @@ export default {
       commit("SET_LOADING", true, { root: true });
       call("get", constants.users)
         .then((res) => {
-          commit("MUTATE", { state: "users", value: res.data });
+          commit("MUTATE", { state: "users", value: res.data.data });
           commit("SET_LOADING", false, { root: true });
         })
         .catch((err) => {
@@ -49,6 +50,7 @@ export default {
             status: "success",
             message: "Success",
           });
+          EventBus.$emit("routetoAll");
         })
         .catch((err) => {
           commit("SET_LOADING", false, { root: true });

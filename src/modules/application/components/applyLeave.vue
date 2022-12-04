@@ -165,12 +165,12 @@
                     <v-select
                       dense
                       outlined
-                      :items="['Male', 'Female']"
+                      :items="handover"
                       v-model="formData.handover"
                       :rules="rules.Field"
                       ref="handover"
-                      item-text="name"
-                      item-value="id"
+                      item-text="email"
+                      item-value="email"
                     >
                       <template v-slot:label>
                         <div>Handover <span class="red--text">*</span></div>
@@ -179,7 +179,7 @@
                   </v-col>
                   <v-col cols="12" sm="8" md="6" class="px-5">
                     <v-file-input
-                      accept="jpeg/png"
+                      accept="application/pdf"
                       :rules="rules.Field"
                       dense
                       prepend-icon="mdi-paperclip"
@@ -223,6 +223,7 @@
 import { AuthService } from "../../auth";
 import Spinner from "@/plugins/loader/views/Spinner";
 import { helper } from "@/utils";
+import { EventBus } from "@/utils/eventBus";
 
 export default {
   name: "Apply",
@@ -230,6 +231,13 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((v) => {
       v.$store.dispatch("Application/getUsers");
+    });
+  },
+  mounted() {
+    EventBus.$on("routetoAll", () => {
+      this.$router.push({
+        name: "Allpplications",
+      });
     });
   },
   components: { Spinner },

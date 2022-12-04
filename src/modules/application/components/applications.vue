@@ -83,7 +83,7 @@
     <AttachmentPreview
       :attachmentDetails="attachmentDetails"
       :dialog="dialog"
-      v-on:close-dialog="closeAttachDialog"
+      v-on:close-dialog="closeDialog"
     />
     <!--END preview-->
   </v-container>
@@ -119,7 +119,7 @@ export default {
     },
   },
   methods: {
-    closeAttachDialog: function (val) {
+    closeDialog: function (val) {
       this.attachDialog = val;
     },
 
