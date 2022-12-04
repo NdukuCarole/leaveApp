@@ -39,12 +39,11 @@ export default {
         });
     },
 
-    saveApplication: ({ commit, dispatch }, data) => {
+    saveApplication: ({ commit }, data) => {
       commit("SET_ALERT", null);
       commit("SET_LOADING", true, { root: true });
-      call("patch", constants.save, data)
+      call("post", constants.save, data)
         .then(() => {
-          dispatch("getBio");
           commit("SET_ALERT", {
             status: "success",
             message: "Success",

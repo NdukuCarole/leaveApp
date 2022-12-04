@@ -25,7 +25,7 @@
 
           <v-row>
             <v-col md="12" sm="12">
-              <v-form v-model="isValid" ref="bioForm">
+              <v-form v-model="isValid" ref="leaveForm">
                 <v-row dense>
                   <v-col md="8" cols="12" class="px-5">
                     <v-text-field
@@ -46,7 +46,7 @@
                       dense
                       outlined
                       :items="['Annual', 'Paternity', 'Maternity']"
-                      v-model="formData.title"
+                      v-model="formData.type"
                       :rules="rules.Field"
                       ref="Title"
                       item-value="title"
@@ -220,6 +220,7 @@
 <script>
 import { AuthService } from "../../auth";
 import Spinner from "@/plugins/loader/views/Spinner";
+import { helper } from "@/utils";
 
 export default {
   name: "Apply",
@@ -240,6 +241,7 @@ export default {
         name: "",
         attachment: "",
         comments: "",
+        type: "",
       },
     };
   },
@@ -260,11 +262,14 @@ export default {
 
   methods: {
     saveApplication: function () {
-      this.$store.dispatch("Application/saveApplication", this.formData);
+      this.$store.dispatch(
+        "Application/saveApplication",
+        helper.prepareFormData({ ...this.formData })
+      );
     },
     uploadFile: async function (value) {
       if (value) {
-        this.formData.attachments = value;
+        this.formData.attachment = value;
       }
     },
   },
