@@ -21,13 +21,13 @@
           >
             {{ $store.getters["Profile/alert"].message }}
           </v-alert>
-          <v-card-title> Profile </v-card-title>
+          <v-card-title> Leave </v-card-title>
 
           <v-row>
             <v-col md="12" sm="12">
               <v-form v-model="isValid" ref="leaveForm">
                 <v-row dense>
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-text-field
                       outlined
                       dense
@@ -41,7 +41,7 @@
                     </v-text-field>
                   </v-col>
 
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-select
                       dense
                       outlined
@@ -59,7 +59,7 @@
                       </template>
                     </v-select>
                   </v-col>
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-menu
                       v-model="dateMenu"
                       :close-on-content-click="false"
@@ -102,14 +102,14 @@
                       </v-date-picker>
                     </v-menu>
                   </v-col>
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-text-field outlined dense v-model="formData.days">
                       <template v-slot:label>
                         <div>Leave Days <span class="red--text">*</span></div>
                       </template>
                     </v-text-field>
                   </v-col>
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-menu
                       v-model="enddateMenu"
                       :close-on-content-click="false"
@@ -161,7 +161,7 @@
                     </v-menu>
                   </v-col>
 
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-select
                       dense
                       outlined
@@ -169,15 +169,17 @@
                       v-model="formData.handover"
                       :rules="rules.Field"
                       ref="handover"
+                      item-text="name"
+                      item-value="id"
                     >
                       <template v-slot:label>
                         <div>Handover <span class="red--text">*</span></div>
                       </template>
                     </v-select>
                   </v-col>
-                  <v-col cols="12" sm="8" md="8" class="px-5">
+                  <v-col cols="12" sm="8" md="6" class="px-5">
                     <v-file-input
-                      accept="application/pdf"
+                      accept="jpeg/png"
                       :rules="rules.Field"
                       dense
                       prepend-icon="mdi-paperclip"
@@ -192,7 +194,7 @@
                       </template></v-file-input
                     >
                   </v-col>
-                  <v-col md="8" cols="12" class="px-5">
+                  <v-col md="6" cols="12" class="px-5">
                     <v-text-field outlined dense v-model="formData.comments">
                       <template v-slot:label>
                         <div>Comments <span class="red--text">*</span></div>
@@ -207,7 +209,7 @@
           <v-divider class="mt-3"></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text @click="redirect()"> Cancel </v-btn>
+            <!-- <v-btn text @click=""> Cancel </v-btn> -->
             <v-btn color="primary" @click="saveApplication()"> Save </v-btn>
           </v-card-actions>
         </v-card>
@@ -224,6 +226,12 @@ import { helper } from "@/utils";
 
 export default {
   name: "Apply",
+
+  beforeRouteEnter(to, from, next) {
+    next((v) => {
+      v.$store.dispatch("Application/getUsers");
+    });
+  },
   components: { Spinner },
   data: function () {
     return {
@@ -242,6 +250,7 @@ export default {
         attachment: "",
         comments: "",
         type: "",
+        applicantId: "",
       },
     };
   },
@@ -255,13 +264,14 @@ export default {
     user() {
       return AuthService.user;
     },
-    bio() {
-      return this.$store.getters["Profile/bioGetters"]("bio");
+    handover() {
+      return this.$store.getters["Application/appGetters"]("users");
     },
   },
 
   methods: {
     saveApplication: function () {
+      this.formData.applicantId = this.user.id;
       this.$store.dispatch(
         "Application/saveApplication",
         helper.prepareFormData({ ...this.formData })

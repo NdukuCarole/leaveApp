@@ -15,7 +15,7 @@ export default [
       },
       {
         path: "all-applications",
-        name: "Allpplicationa",
+        name: "Allpplications",
         component: applications,
       },
     ],

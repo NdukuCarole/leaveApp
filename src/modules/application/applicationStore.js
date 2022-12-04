@@ -5,6 +5,7 @@ export default {
   namespaced: true,
   state: {
     users: [],
+    applications: [],
   },
   mutations: {
     MUTATE: (state, payload) => {
@@ -25,9 +26,9 @@ export default {
     getUsers: ({ commit }) => {
       commit("SET_ALERT", null);
       commit("SET_LOADING", true, { root: true });
-      call("get", constants.bio)
+      call("get", constants.users)
         .then((res) => {
-          commit("MUTATE", { state: "bio", value: res.data.data });
+          commit("MUTATE", { state: "users", value: res.data });
           commit("SET_LOADING", false, { root: true });
         })
         .catch((err) => {
@@ -48,6 +49,22 @@ export default {
             status: "success",
             message: "Success",
           });
+        })
+        .catch((err) => {
+          commit("SET_LOADING", false, { root: true });
+          commit("SET_ALERT", {
+            status: "error",
+            message: err.response.data.message,
+          });
+        });
+    },
+    getApplications: ({ commit }) => {
+      commit("SET_ALERT", null);
+      commit("SET_LOADING", true, { root: true });
+      call("get", constants.applications)
+        .then((res) => {
+          commit("MUTATE", { state: "applications", value: res.data.data });
+          commit("SET_LOADING", false, { root: true });
         })
         .catch((err) => {
           commit("SET_LOADING", false, { root: true });
