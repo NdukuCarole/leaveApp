@@ -3,9 +3,8 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import store from "./store";
 import auth from "./modules/auth";
-import home from "./modules/home";
 import profile from "./modules/profile";
-import landing from "./modules/landing";
+import application from "./modules/application";
 import appAlert from "./plugins/appAlert";
 import confirmation from "./plugins/confirmtion";
 import loader from "./plugins/loader";
@@ -23,9 +22,8 @@ Vue.use(appAlert);
 Vue.use(confirmation);
 Vue.use(loader);
 Vue.use(auth, options);
-Vue.use(home, options);
+Vue.use(application, options);
 Vue.use(profile, options);
-Vue.use(landing, options);
 
 /* Register Filters */
 filters.forEach((f) => {

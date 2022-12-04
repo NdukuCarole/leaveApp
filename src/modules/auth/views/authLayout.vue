@@ -26,7 +26,7 @@ export default {
     next((v) => {
       if (AuthService.check()) {
         v.$router.replace({
-          name: "Dashboard",
+          name: "Application",
         });
       }
     });

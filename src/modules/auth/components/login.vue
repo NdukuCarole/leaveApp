@@ -73,7 +73,7 @@
                 <v-card-actions class="">
                   <v-row>
                     <v-col cols="12">
-                      <v-btn @click="login" color="primary" block>
+                      <v-btn @click="login()" color="primary" block>
                         Login
                       </v-btn>
                     </v-col>
@@ -160,28 +160,18 @@
 </template>
 
 <script>
-// import AuthAlert from "@/modules/auth/components/authAlert";
 import { EventBus } from "@/utils/eventBus";
-// import RequestAccess from "@/modules/auth/components/requestAccess";
 
 export default {
   name: "login",
-  // components: { RequestAccess },
+
   data: function () {
     return {
-      dialog: true,
-      token: "",
       isValid: false,
-      isValidSearch: false,
-      isValidPassword: false,
       showPassword: false,
-      step: "login",
-      steps: ["login", "verify", "password"],
-      memberNo: "",
       formData: {
         email: "",
         password: "",
-        token: "",
       },
       rules: {
         email: [
@@ -197,119 +187,16 @@ export default {
     };
   },
 
-  beforeRouteEnter(to, from, next) {
-    next((v) => {
-      if (v.$route.query.memberNo && v.$route.query.voterToken) {
-        v.token = v.$route.query.voterToken;
-        v.memberNo = v.$route.query.memberNo;
-        v.step = "password";
-      }
-    });
-  },
-
   mounted() {
     EventBus.$on("search-success", () => {
       this.step = "verify";
     });
-
-    EventBus.$on("search-failed", (message) => {
-      this.$alert({
-        title: "Voter not found",
-        text: message,
-      });
-    });
-
-    EventBus.$on("token-verification-success", () => {
-      this.step = "password";
-      this.dialog = false;
-    });
-
-    EventBus.$on("token-verification-failed", (message) => {
-      this.$alert({
-        title: "Invalid voter token",
-        text: message,
-      });
-    });
-
-    EventBus.$on("token-sending-failed", (message) => {
-      this.$alert({
-        title: "Token not sent",
-        text: message,
-      });
-    });
   },
 
-  computed: {
-    results() {
-      return this.$store.getters["Auth/results"][0];
-    },
-    routeParams() {
-      return this.$route.params.code;
-    },
-  },
-
+  computed: {},
   methods: {
     login: function () {
-      this.$refs.loginForm.validate();
-      if (this.isValid) {
-        this.$store.dispatch("Auth/login", this.formData);
-      }
-    },
-
-    search: function () {
-      this.$refs.searchForm.validate();
-      if (this.isValidSearch) {
-        this.$store.dispatch("Auth/search", { memberNo: this.memberNo });
-      }
-    },
-
-    setPassword: function () {
-      this.$refs.passwordForm.validate();
-      if (this.isValidPassword) {
-        this.$store.dispatch("Auth/setPassword", {
-          ...this.formData,
-          voterToken: this.token,
-        });
-      }
-    },
-
-    sendToken: function (type) {
-      this.$store.dispatch("Auth/sendToken", {
-        user: { ...this.results },
-        type: type,
-      });
-    },
-
-    verifyToken: function () {
-      this.$store.dispatch("Auth/verifyToken", {
-        user: { ...this.results },
-        voterToken: this.token,
-      });
-    },
-
-    emailMask: function (email) {
-      if (!email) return "";
-
-      const index = email.lastIndexOf("@");
-      const prefix = email.substring(0, index);
-      const postfix = email.substring(index);
-
-      const mask = prefix
-        .split("")
-        .map(function (o, i) {
-          if (i === 0 || i === index - 1) {
-            return o;
-          } else {
-            return "*";
-          }
-        })
-        .join("");
-
-      return mask + postfix;
-    },
-
-    phoneMask: function (phoneNumber) {
-      return phoneNumber ? phoneNumber.replace(/\d{5}$/, "*****") : "";
+      this.$store.dispatch("Auth/login", this.formData);
     },
   },
 };

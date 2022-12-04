@@ -41,16 +41,18 @@
 <script>
 import Bio from "./bio/Bio";
 import Contact from "./contact/Contact";
+import AuthService from "@/modules/auth/authService";
 export default {
   name: "updateProfile",
   components: { Bio, Contact },
   beforeRouteEnter(to, from, next) {
     next((v) => {
       v.$store.dispatch("Profile/getBio");
-      v.$store.dispatch("Profile/getMaritalStatus");
-      v.$store.dispatch("Profile/getTitles");
-      v.$store.dispatch("Profile/getSectors");
-      v.$store.dispatch("Profile/getContact");
+      if (!AuthService.check()) {
+        v.$router.replace({
+          name: "Login",
+        });
+      }
     });
   },
 

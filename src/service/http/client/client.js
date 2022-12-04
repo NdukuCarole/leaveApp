@@ -1,12 +1,12 @@
 import axios from "axios";
-import { apiBaseUrl } from "@/environment";
+
 import { AuthService } from "@/modules/auth";
 
 /**
  * Axios basic configuration
  */
 const config = {
-  baseURL: apiBaseUrl,
+  baseURL: "http://localhost:8000/api/v1/",
 };
 
 /**
@@ -23,8 +23,7 @@ const client = axios.create(config);
  */
 const authInterceptor = (config) => {
   if (AuthService.check()) {
-    config.headers.Authorization = `Bearer ${AuthService.token}`;
-    config.headers.Company = AuthService.company ? AuthService.company.id : "";
+    config.headers.Authorization = `user ${AuthService.user}`;
   }
   config.headers.common.Accept = "Application/json";
   config.headers["Access-Control-Allow-Origin"] = "*";

@@ -24,80 +24,27 @@
           <v-card-title> Profile </v-card-title>
 
           <v-row>
-            <v-col md="3" sm="12" class="mt-n3">
-              <v-card elevation="0">
-                <v-img
-                  :src="ProfilePicture"
-                  height="100px"
-                  class="rounded"
-                  contain
-                ></v-img>
-
-                <v-card-subtitle class="text-center">
-                  Attach a passport Size colored photo
-                </v-card-subtitle>
-
-                <v-card-actions>
-                  <v-file-input
-                    outlined
-                    dense
-                    ref="Image"
-                    type="file"
-                    v-model="formData.Image"
-                    @change="attachProfilePicture"
-                    accept="image/png, image/jpeg"
-                    append-icon="mdi-paperclip"
-                  >
-                    <template v-slot:label>
-                      <div>Attach Photo <span class="red--text">*</span></div>
-                    </template>
-                  </v-file-input>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-
-            <v-divider vertical />
-
-            <v-col md="9" sm="12">
+            <v-col md="12" sm="12">
               <v-form v-model="isValid" ref="bioForm">
                 <v-row dense>
                   <v-col md="4" cols="12" class="px-5">
                     <v-text-field
                       outlined
                       dense
-                      v-model="formData.lastName"
+                      v-model="formData.name"
                       :rules="rules.Field"
                       ref="LastName"
                     >
                       <template v-slot:label>
-                        <div>Last Name <span class="red--text">*</span></div>
+                        <div>Name <span class="red--text">*</span></div>
                       </template>
                     </v-text-field>
                   </v-col>
 
                   <v-col md="4" cols="12" class="px-5">
-                    <v-text-field
-                      outlined
-                      dense
-                      v-model="formData.firstName"
-                      :rules="rules.Field"
-                      ref="FirstName"
-                    >
+                    <v-text-field outlined dense v-model="formData.areaofWork">
                       <template v-slot:label>
-                        <div>First Name <span class="red--text">*</span></div>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col md="4" cols="12" class="px-5">
-                    <v-text-field
-                      outlined
-                      dense
-                      v-model="formData.secondName"
-                      ref="SecondName"
-                    >
-                      <template v-slot:label>
-                        <div>Other Names <span class="red--text">*</span></div>
+                        <div>Wort Title <span class="red--text">*</span></div>
                       </template>
                     </v-text-field>
                   </v-col>
@@ -106,7 +53,7 @@
                     ><v-select
                       dense
                       outlined
-                      :items="marital"
+                      :items="['Single', 'Married']"
                       v-model="formData.maritalStatus"
                       :rules="rules.Field"
                       ref="maritalStatus"
@@ -123,36 +70,10 @@
                   </v-col>
 
                   <v-col md="4" cols="12" class="px-5">
-                    <v-text-field
-                      outlined
-                      dense
-                      v-model="formData.idNo"
-                      :rules="rules.Field"
-                      ref="idNo"
-                    >
-                      <template v-slot:label>
-                        <div>ID No <span class="red--text">*</span></div>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                  <v-col md="4" cols="12" class="px-5">
-                    <v-text-field
-                      outlined
-                      dense
-                      v-model="formData.linkedInURL"
-                      :rules="rules.Field"
-                      ref="linkedInURL"
-                    >
-                      <template v-slot:label>
-                        <div>LinkedIn URL <span class="red--text">*</span></div>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                  <v-col md="4" cols="12" class="px-5">
                     <v-select
                       dense
                       outlined
-                      :items="titles"
+                      :items="['Miss', 'Mr']"
                       v-model="formData.title"
                       :rules="rules.Field"
                       ref="Title"
@@ -178,65 +99,6 @@
                         <div>Gender <span class="red--text">*</span></div>
                       </template>
                     </v-select>
-                  </v-col>
-
-                  <v-col md="4" cols="12" class="px-5">
-                    <v-text-field
-                      outlined
-                      dense
-                      type="date"
-                      v-model="formData.dateOfBirth"
-                      :rules="rules.Field"
-                      ref="DateOfBirth"
-                    >
-                      <template v-slot:label>
-                        <div>
-                          Date of Birth <span class="red--text">*</span>
-                        </div>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                  <v-col md="6" cols="12" class="px-5">
-                    <v-textarea
-                      outlined
-                      dense
-                      rows="2"
-                      v-model="formData.professionalSummary"
-                      :rules="rules.Field"
-                      ref="professionalSummary"
-                    >
-                      <template v-slot:label>
-                        <div>
-                          Professional Summary<span class="red--text">*</span>
-                        </div>
-                      </template>
-                    </v-textarea>
-                  </v-col>
-
-                  <v-col md="6" cols="12" class="px-5">
-                    <v-switch
-                      v-model="formData.Disability"
-                      ref="Disability"
-                      inset
-                      label="Any form of disability"
-                      class="mt-0"
-                    />
-
-                    <v-textarea
-                      v-if="formData.Disability && editable"
-                      v-model="formData.DisabilityDescription"
-                      :rules="rules.DisabilityDescription"
-                      ref="DisabilityDescription"
-                      outlined
-                      label="Specify disability"
-                      rows="2"
-                    >
-                      <template v-slot:label>
-                        <div>
-                          Specify disability <span class="red--text">*</span>
-                        </div>
-                      </template>
-                    </v-textarea>
                   </v-col>
                 </v-row>
               </v-form>
@@ -265,59 +127,22 @@ export default {
   components: { Spinner },
   data: function () {
     return {
-      image_url: "",
-      editable: true,
       edit: false,
       isValid: false,
       formData: {
-        Image: undefined,
         address: "",
-        anyFormOfDisability: false,
-        city: "",
-        countryCode: "",
-        dateOfBirth: "",
-        disabilityDescription: "",
-        email: "",
         firstName: "",
         gender: "",
-        idNo: "",
-        lastName: "",
-        linkedInURL: "",
         maritalStatus: "",
-        nationality: "KE",
-        professionalSummary: "",
-        profileID: "",
-        searchName: "",
-        secondName: "",
         title: "",
-        base64ProfilePic: undefined,
+        areaofWork: "",
       },
-      getImageinbs64: "",
     };
   },
 
   computed: {
     rules() {
       return {
-        profImage: [
-          (v) => {
-            return this.editable &&
-              AuthService.user.profile &&
-              !AuthService.user.profile.picture
-              ? !!v || "Profile Picture is required"
-              : true;
-          },
-          (v) => {
-            return this.editable && !!v
-              ? v.size < 10000000 || "Attachment should be less than 10MB"
-              : true;
-          },
-          (v) => {
-            return this.editable && !!v
-              ? v.type.includes("image") || "Attachment must be an image"
-              : true;
-          },
-        ],
         Field: [(v) => !!v || "Field is required"],
       };
     },
@@ -327,32 +152,6 @@ export default {
     bio() {
       return this.$store.getters["Profile/bioGetters"]("bio");
     },
-    marital() {
-      return this.$store.getters["Profile/bioGetters"]("maritalStatus");
-    },
-    titles() {
-      return this.$store.getters["Profile/bioGetters"]("titles");
-    },
-    sectors() {
-      return this.$store.getters["Profile/bioGetters"]("sectors");
-    },
-
-    ProfilePicture() {
-      let profile = this.bio[0];
-
-      if (this.image_url) return this.image_url;
-
-      return profile
-        ? profile.base64ProfilePic
-          ? `data:image/jpeg;base64,${profile.base64ProfilePic}` ||
-            `data:image/png;base64,${profile.base64ProfilePic}`
-          : "../../../../assets/profile.jpg"
-        : "../../../../assets/profile.jpg";
-    },
-
-    profImage() {
-      return `data:image/jpeg;base64,${this.bio[0].base64ProfilePic}`;
-    },
   },
 
   methods: {
@@ -360,29 +159,10 @@ export default {
       if (!this.isValid) {
         this.$refs.bioForm.validate();
       } else {
-        this.formData.Image = this.formData.base64ProfilePic;
-        this.formData.profileID = this.user.profileID;
         this.$store.dispatch("Profile/saveBio", this.formData);
       }
     },
-    convertTobase64: async function (url) {
-      const data = await fetch(url);
-      const blob = await data.blob();
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onload = () => {
-        const base64data = reader.result;
-        console.log(base64data);
-        const strImage = base64data.replace(/^data:image\/[a-z]+;base64,/, "");
-        this.formData.base64ProfilePic = strImage;
-        return base64data;
-      };
-    },
 
-    attachProfilePicture: function () {
-      this["image_url"] = URL.createObjectURL(this.formData["Image"]);
-      this.getImageinbs64 = this.convertTobase64(this.image_url);
-    },
     redirect() {
       this.$router.push({
         name: "Application",

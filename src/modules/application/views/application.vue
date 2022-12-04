@@ -1,16 +1,10 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <!-- <a @click="$router.push({ name: 'Home' })">
-        <v-avatar size="40">
-          <img src="/logo.png" />
-        </v-avatar>
-      </a> -->
-      <Logo />
+    <v-app-bar app dense color="primary">
       <v-spacer />
 
       <v-btn
-        color="primary"
+        dark
         v-if="!auth.check()"
         text
         :to="{ name: 'Login' }"
@@ -19,36 +13,25 @@
         Login
       </v-btn>
 
-      <v-btn
-        color="primary"
-        text
-        v-else
-        @click="$store.dispatch('Auth/logout')"
-      >
+      <v-btn text v-else @click="$store.dispatch('Auth/logout')">
         Logout
         <v-icon right>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-main class="background">
+    <v-main>
       <router-view />
     </v-main>
 
     <loader />
-
-    <app-footer />
-
-    <app-alert />
   </v-app>
 </template>
 
 <script>
-import AppFooter from "@/components/app-footer";
 import { AuthService } from "@/modules/auth";
-import Logo from "@/components/Logo";
+
 export default {
-  name: "Login",
-  components: { AppFooter, Logo },
+  name: "home",
 
   beforeRouteEnter(to, from, next) {
     next(() => {});

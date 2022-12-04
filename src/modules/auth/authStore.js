@@ -55,15 +55,14 @@ export default {
       commit("SET_ALERT", null);
 
       call("post", AuthConstants.login, data).then((res) => {
-        console.log(res);
-        if (res.data.data.authStatus === "success") {
-          AuthService.login(res.data.data.token, res.data.data.user);
+        if (res.data.status === "success") {
+          AuthService.login(res.data.token, res.data.user);
           commit("SET_LOADING", false, { root: true });
         } else {
-          if (res.data.data.authStatus === "error") {
+          if (res.data.status === "error") {
             commit("SET_ALERT", {
               status: "error",
-              message: res.data.data,
+              message: res.data.message,
             });
             commit("SET_LOADING", false, { root: true });
           }
@@ -86,23 +85,6 @@ export default {
             status: "error",
             message: err.response.data.message,
           });
-        });
-    },
-
-    search: ({ commit }, data) => {
-      commit("SET_LOADING", true, { root: true });
-      commit("SET_ALERT", null);
-      commit("SET_RESULTS", null);
-
-      call("post", AuthConstants.verify, data)
-        .then((res) => {
-          commit("SET_LOADING", false, { root: true });
-          commit("SET_RESULTS", res.data.data);
-          EventBus.$emit("search-success");
-        })
-        .catch((err) => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit("search-failed", err.response.data.message);
         });
     },
 
@@ -186,7 +168,7 @@ export default {
           commit("SET_LOADING", false, { root: true });
           commit("SET_ALERT", {
             status: "success",
-            message: res.data.data.message,
+            message: res.data.message,
           });
           dispatch("openOtp", true);
           // EventBus.$emit("routeBack");
@@ -195,7 +177,7 @@ export default {
           commit("SET_LOADING", false, { root: true });
           commit("SET_ALERT", {
             status: "error",
-            message: err.response.data.message,
+            message: err.data.message,
           });
         });
     },
@@ -224,10 +206,13 @@ export default {
       commit("SET_ALERT", null);
 
       call("post", AuthConstants.verifyOtp, data)
-        .then((res) => {
+        .then(() => {
           commit("SET_LOADING", false, { root: true });
-          AuthService.login(res.data.data.token, res.data.data.user);
-          EventBus.$emit("redirectToAcademic");
+          commit("SET_ALERT", {
+            status: "sucsess",
+            message: "Sucess",
+          });
+          EventBus.$emit("redirectToLogin");
         })
         .catch((err) => {
           commit("SET_LOADING", false, { root: true });
@@ -255,72 +240,6 @@ export default {
         });
     },
 
-    verifyToken: ({ commit }, data) => {
-      commit("SET_LOADING", true, { root: true });
-      commit("SET_ALERT", null);
-
-      call("post", AuthConstants.verifyToken, data)
-        .then(() => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit("token-verification-success");
-        })
-        .catch((err) => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit(
-            "token-verification-failed",
-            err.response.data.message
-          );
-        });
-    },
-
-    sendToken: ({ commit }, data) => {
-      commit("SET_LOADING", true, { root: true });
-      commit("SET_ALERT", null);
-      call("post", AuthConstants.sendVoterToken, data)
-        .then(() => {
-          commit("SET_LOADING", false, { root: true });
-        })
-        .catch((err) => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit("token-sending-failed", err.response.data.message);
-        });
-    },
-
-    sendVotingOtp: ({ commit }, data) => {
-      commit("SET_LOADING", true, { root: true });
-      commit("SET_ALERT", null);
-
-      call("post", AuthConstants.verifyOtp, data)
-        .then(() => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit("otp-verification-success");
-        })
-        .catch((err) => {
-          commit("SET_LOADING", false, { root: true });
-          commit("SET_ALERT", {
-            status: "error",
-            message: err.response.data.message,
-          });
-        });
-    },
-
-    verifyVotingOtp: ({ commit }, data) => {
-      commit("SET_LOADING", true, { root: true });
-      commit("SET_ALERT", null);
-
-      call("post", AuthConstants.verifyToken, data)
-        .then(() => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit("token-verification-success");
-        })
-        .catch((err) => {
-          commit("SET_LOADING", false, { root: true });
-          EventBus.$emit(
-            "token-verification-failed",
-            err.response.data.message
-          );
-        });
-    },
     openOtp({ commit }, payload) {
       console.log(payload);
       commit("SET_OTP_MODAL", payload);

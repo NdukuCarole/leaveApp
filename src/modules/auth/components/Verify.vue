@@ -30,7 +30,7 @@
           </v-alert>
 
           <v-otp-input
-            length="6"
+            length="4"
             v-model="otp_code"
             @finish="verifyOtp"
             class="mt-6"
@@ -62,23 +62,21 @@
 
 <script>
 import { EventBus } from "@/utils/eventBus";
-// import AuthAlert from "@/modules/auth/components/authAlert";
 
 export default {
   name: "Verify",
   props: {
     userEmail: String,
   },
-  // components: { AuthAlert },
   data: function () {
     return {
       otp_code: "",
     };
   },
   mounted() {
-    EventBus.$on("redirectToAcademic", () => {
+    EventBus.$on("redirectToLogin", () => {
       this.$router.push({
-        name: "Academic",
+        name: "Login",
       });
     });
   },

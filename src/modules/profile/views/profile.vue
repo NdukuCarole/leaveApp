@@ -1,14 +1,6 @@
 <template>
   <v-app>
     <v-app-bar app dense color="primary">
-      <!-- <a @click="$router.push({ name: 'Home' })">
-        <v-avatar size="40">
-          <img src="/logo.png" />
-          
-        </v-avatar>
-      </a> -->
-      <Logo />
-
       <v-spacer />
 
       <v-btn
@@ -40,12 +32,10 @@
 </template>
 
 <script>
-import AppFooter from "@/components/app-footer";
 import { AuthService } from "@/modules/auth";
-import Logo from "@/components/Logo";
+
 export default {
   name: "home",
-  components: { AppFooter, Logo },
 
   beforeRouteEnter(to, from, next) {
     next(() => {});
